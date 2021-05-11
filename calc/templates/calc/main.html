@@ -1,0 +1,16 @@
+{% extends 'calc/base.html' %}
+
+{% block title %}
+Geodjango | calculate distance
+{% endblock title %}
+
+{% block content %}
+{{distance}}
+
+<hr>
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</form>
+{% endblock content %}
