@@ -1,16 +1,54 @@
 {% extends 'calc/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}
 Geodjango | calculate distance
 {% endblock title %}
 
 {% block content %}
-{{distance}}
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">The distance between you and your dream city is {{destination}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{distance}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   -->
+  <div class="formdiv"  style="float:left;width: 100%; margin: 15px;">
+    <form method="POST" autocomplete="off">
+      {% csrf_token %}
+      
+      {{form|crispy}}
+      <button type="submit" class="btn btn-primary" style="margin: 7px;">Confirm</button>
+    </form>
+    <div class="map" style="float: left;width: 100%;height:500px;padding:5px;margin: 12px;">
+      {{map|safe}}
+    </div>
+    
+  </div>
+  
+  <br>
+  <div class="text" style="position: relative">
+    <p style="position: fixed; bottom: 0; width:100%; text-align: center"> This product includes GeoLite2 data created by MaxMind, available from
+      <a href="https://www.maxmind.com">https://www.maxmind.com</a>.
+    </p>
+  </div>
+ 
 
-<hr>
-<form method="POST" autocomplete="off">
-    {% csrf_token %}
-    {{form}}
-    <button type="submit" class="btn btn-primary">Confirm</button>
-</form>
+    {% if request.POST and distance is not None %}
+    <script>
+        $(window).on('load',function(){
+            $('#exampleModal').modal('show')
+        })
+    </script>
+    {% endif%}
 {% endblock content %}
